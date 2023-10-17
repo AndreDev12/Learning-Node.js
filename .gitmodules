@@ -1,0 +1,3 @@
+[submodule "node-essentials"]
+	path = node-essentials
+	url = https://github.com/MicrosoftDocs/node-essentials.git
