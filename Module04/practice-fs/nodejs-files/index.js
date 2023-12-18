@@ -49,7 +49,10 @@ async function main() {
 
   // find paths to all the sales files
   const salesFiles = await findSalesFiles(salesDir);
-  console.log(salesFiles);
+
+  // write the total to the "totals.txt" file
+  await fs.writeFile(path.join(salesTotalsDir, "totals.txt"), String());
+  console.log(`Wrote sales totals to ${salesTotalsDir}`);
 }
 
 main();
