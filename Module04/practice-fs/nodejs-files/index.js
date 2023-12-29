@@ -1,6 +1,13 @@
 const fs = require("fs").promises;
 const path = require("path");
 
+async function calculateSalesTotal(){
+  let salesTotal = 0;
+
+  // Read files loop
+  return salesTotal;
+}
+
 async function findSalesFiles(folderName) {
   // this array will hold sales files as they are found
   let salesFiles = [];
@@ -55,7 +62,9 @@ async function main() {
   console.log(`Wrote sales totals to ${salesTotalsDir}`);
 
   const data = JSON.parse(await fs.readFile("stores/201/sales.json"));
-  console.log(data.total);
+  
+  // write the total to the "totals.json" file
+  await fs.writeFile(path.join("salesTotals/totals.txt"), `${data.total}\r\n`, {flag: "a"})
 }
 
 main();
