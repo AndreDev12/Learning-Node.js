@@ -54,8 +54,8 @@ async function main() {
   await fs.writeFile(path.join(salesTotalsDir, "totals.txt"), String());
   console.log(`Wrote sales totals to ${salesTotalsDir}`);
 
-  const bufferData = await fs.readFile("stores/201/sales.json");
-  console.log(String(bufferData));
+  const data = JSON.parse(await fs.readFile("stores/201/sales.json"));
+  console.log(data.total);
 }
 
 main();
