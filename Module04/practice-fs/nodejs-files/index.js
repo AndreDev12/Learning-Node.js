@@ -1,10 +1,15 @@
 const fs = require("fs").promises;
 const path = require("path");
 
-async function calculateSalesTotal(){
+async function calculateSalesTotal(salesFiles) {
   let salesTotal = 0;
-
-  // Read files loop
+  // loop over each file path in the salesFiles array
+  for (file of salesFiles) {
+    // read the file and parse the contents as JSON
+    const data = JSON.parse(await fs.readFile(file));
+    // Add the amount in the data.total field to the salesTotal variable
+    salesTotal += data.total;
+  }
   return salesTotal;
 }
 
@@ -40,31 +45,27 @@ async function findSalesFiles(folderName) {
 async function main() {
   const salesDir = path.join(__dirname, "stores");
   const salesTotalsDir = path.join(__dirname, "salesTotals");
-  const pathToCreate = path.join(__dirname, "stores", "201", "newDirectory");
-  const pathToFile = path.join(__dirname, "greeting.txt");
 
-  await fs.writeFile(pathToFile, String("¡Hola mundo!"));
-
+  // create the salesTotal directory if it doesn't exist
   try {
     await fs.mkdir(salesTotalsDir);
-    await fs.mkdir(pathToCreate);
   } catch {
-    console.log(`${pathToCreate} already exists.`);
     console.log(`${salesTotalsDir} already exists.`);
-    // return;
   }
 
   // find paths to all the sales files
   const salesFiles = await findSalesFiles(salesDir);
 
-  // write the total to the "totals.txt" file
-  await fs.writeFile(path.join(salesTotalsDir, "totals.txt"), String());
-  console.log(`Wrote sales totals to ${salesTotalsDir}`);
+  // read through each sales file to calculate the sales total
+  const salesTotal = await calculateSalesTotal(salesFiles);
 
-  const data = JSON.parse(await fs.readFile("stores/201/sales.json"));
-  
   // write the total to the "totals.json" file
-  await fs.writeFile(path.join("salesTotals/totals.txt"), `${data.total}\r\n`, {flag: "a"})
+  await fs.writeFile(
+    path.join(salesTotalsDir, "totals.txt"),
+    `${salesTotal}\r\n`,
+    { flag: "a" }
+  );
+  console.log(`Wrote sales totals to ${salesTotalsDir}`);
 }
 
 main();
