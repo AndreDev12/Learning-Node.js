@@ -1,5 +1,5 @@
-const fs = require("fs").promises;
-const path = require("path");
+const fs = require('fs').promises;
+const path = require('path');
 
 async function calculateSalesTotal(salesFiles) {
   let salesTotal = 0;
@@ -29,7 +29,7 @@ async function findSalesFiles(folderName) {
         await findFiles(path.join(folderName, item.name));
       } else {
         // Make sure the discovered file is a .json file
-        if (path.extname(item.name) === ".json") {
+        if (path.extname(item.name) === '.json') {
           // store the file path in the salesFiles array
           await salesFiles.push(path.join(folderName, item.name));
         }
@@ -43,8 +43,8 @@ async function findSalesFiles(folderName) {
 }
 
 async function main() {
-  const salesDir = path.join(__dirname, "stores");
-  const salesTotalsDir = path.join(__dirname, "salesTotals");
+  const salesDir = path.join(__dirname, 'stores');
+  const salesTotalsDir = path.join(__dirname, 'salesTotals');
 
   // create the salesTotal directory if it doesn't exist
   try {
@@ -61,9 +61,9 @@ async function main() {
 
   // write the total to the "totals.json" file
   await fs.writeFile(
-    path.join(salesTotalsDir, "totals.txt"),
+    path.join(salesTotalsDir, 'totals.txt'),
     `${salesTotal}\r\n`,
-    { flag: "a" }
+    { flag: 'a' }
   );
   console.log(`Wrote sales totals to ${salesTotalsDir}`);
 }
