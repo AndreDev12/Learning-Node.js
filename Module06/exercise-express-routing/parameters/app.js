@@ -30,8 +30,8 @@ app.get('/products/:id', (req, res) => {
   }
 });
 app.get('/products', (req, res) => {
-  const page = +req.query.page;
-  const pageSize = +req.query.pageSize;
+  const page = Number(req.query.page);
+  const pageSize = Number(req.query.pageSize);
 
   if (page && pageSize) {
     const start = (page - 1) * pageSize;
