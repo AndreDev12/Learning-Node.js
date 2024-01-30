@@ -7,23 +7,36 @@ app.use(bodyParser.json());
 
 let products = [];
 
-app.post('/products', (req, res) => {
-  const newProduct = { ...req.body, id: products.length + 1 };
-  products = [...products, newProduct];
-  res.json(newProduct);
-});
+app.route('/').get((req, res) => res.send('Home'));
 
-app.put('/products', function (req, res) {
-  // implement
-});
-
-app.delete('/products/:id', function (req, res) {
-  // implement
-});
-
-app.get('/products', (req, res) => {
-  res.json(products);
-});
+app
+  .route('/products')
+  .get((req, res) => {
+    res.json(products);
+  })
+  .post((req, res) => {
+    const newProduct = { ...req.body, id: products.length + 1 };
+    products = [...products, newProduct];
+    res.json(newProduct);
+  })
+  .put((req, res) => {
+    const { id } = req.body;
+    for (const product of products) {
+      if (product.id === id) {
+        products[id - 1] = req.body;
+      }
+    }
+    res.json(req.body);
+  })
+  .delete((req, res) => {
+    const productIndex = products.findIndex(
+      (product) => product.id === req.body.id
+    );
+    if (productIndex >= 0) {
+      const removedProduct = products.splice(productIndex, 1)[0];
+      res.json(removedProduct);
+    }
+  });
 
 app.listen(port, () =>
   console.log(`Example app listening at http://localhost:${port}`)
